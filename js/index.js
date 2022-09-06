@@ -1,5 +1,5 @@
-// const PIXI = require('pixi.js');
-// import SpaceShip from './spaceship.js';
+const PIXI = require('pixi.js');
+import SpaceShip from './spaceship.js';
 
 const app = new PIXI.Application({ 
     width: 640, 

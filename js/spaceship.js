@@ -1,10 +1,12 @@
-class SpaceShip {
+const PIXI = require('pixi.js');
+
+module.exports = class SpaceShip {
     constructor(game, x, y, name) {
         this.game = game;
         this.x = x;
         this.y = y;
         this.name = name;
-
+        console.log()asd
         // spaceship container
 		this.container = new PIXI.Container();
 		this.container.position.x = x;
