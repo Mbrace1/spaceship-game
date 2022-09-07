@@ -1,0 +1,55 @@
+{
+	"frames": {
+		"flame3.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 400,
+				"h": 711
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 400,
+				"h": 711
+			},
+			"sourceSize": {
+				"w": 400,
+				"h": 711
+			}
+		},
+		"flame4.png": {
+			"frame": {
+				"x": 403,
+				"y": 1,
+				"w": 400,
+				"h": 711
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 400,
+				"h": 711
+			},
+			"sourceSize": {
+				"w": 400,
+				"h": 711
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 804,
+			"h": 713
+		},
+		"scale": "1"
+	}
+}
