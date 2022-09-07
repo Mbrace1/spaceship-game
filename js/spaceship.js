@@ -4,6 +4,8 @@ class SpaceShip {
         this.x = x;
         this.y = y;
         this.name = name;
+        this.dx = 0;
+        this.dy = 0;    
 
         // spaceship container
 		this.container = new PIXI.Container();
@@ -11,11 +13,11 @@ class SpaceShip {
 		this.container.position.y = y;
 
         // create sprite
-        this.body = PIXI.Sprite.from( '/img/sample.png' );
+        this.body = PIXI.Sprite.from('/img/spaceship-body.png');
 		// this.body.tint = this.tint;
 		this.body.anchor.x = 0.5;
 		this.body.anchor.y = 0.5;
-        this.container.addChild( this.body );
+        this.container.addChild(this.body);
 
         // add to stage
         this.game.stage.addChild(this.container);
@@ -26,12 +28,19 @@ class SpaceShip {
         // if bullet within body of sprite
         // takewaway health
         // call destroyed if no health 
-        console.log("hit")
+        // console.log("hit")
     }
     
     // destroyed
         // show explosion
         // remove ship from game
+
+    position(dx, dy) {
+        console.log(this.x)
+        console.log(this.y)
+        this.x = this.x + dx
+        this.y = this.y + dy
+    }
     // position/movement update
         // wasd movement
 }
