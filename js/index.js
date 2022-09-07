@@ -12,6 +12,7 @@ document.body.appendChild(app.view);
 
 
 const player1 = new Spaceship(app, 80, 80, "Player1")
+const player2 = new Spaceship(app, 100, 100, "Player2")
 
 
 // let shipContainer = new PIXI.Container();
@@ -50,18 +51,23 @@ const player1 = new Spaceship(app, 80, 80, "Player1")
 function shipMovement(e) {
     // movement
     if (keys["d"]) {
-        // ship1.rotation += 0.1
-        player1.body.rotation += 0.1
+        player1.movement("right")
     }
     if (keys["a"]) {
-        // ship1.rotation -= 0.1
-        player1.body.rotation -= 0.1
+        player1.movement("left")
     }
     if (keys["w"]) {
-        player1.container.position.x += Math.sin( player1.body.rotation )  * speed;
-        player1.container.position.y -= Math.cos( player1.body.rotation )  * speed;
-        // console.log("move")
-
+        player1.movement("forward")
+    }
+    // player2 change keys to arrow
+    if (keys["ArrowRight"]) {
+        player2.movement("right")
+    }
+    if (keys["ArrowLeft"]) {
+        player2.movement("left")
+    }
+    if (keys["ArrowUp"]) {
+        player2.movement("forward")
     }
 }
 

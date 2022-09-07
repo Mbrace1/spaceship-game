@@ -3,7 +3,7 @@ class Spaceship {
     constructor(game, x, y, name) {
         this.game = game;
         this.name = name;   
-
+        this.speed = 4;
         // spaceship container
 		this.container = new PIXI.Container();
 		this.container.position.x = x;
@@ -30,6 +30,19 @@ class Spaceship {
         // console.log("hit")
     }
     
+    movement(direction) {
+        if (direction === "right") {
+            this.body.rotation += 0.1
+        }
+        if (direction === "left") {
+            this.body.rotation -= 0.1
+        }
+        if (direction === "forward") {
+            this.container.position.x += Math.sin( this.body.rotation )  * this.speed;
+            this.container.position.y -= Math.cos( this.body.rotation )  * this.speed;
+            console.log("move")
+        }
+    }
     // destroyed
         // show explosion
         // remove ship from game
