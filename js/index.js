@@ -18,6 +18,7 @@ shipContainer.rotation = 0;
 let ship1 = PIXI.Sprite.from('/img/spaceship-body.png');
 ship1.anchor.x = 0.5
 ship1.anchor.y = 0.5
+ship1.tint = 0x00FF00
 shipContainer.addChild(ship1)
 
 // load img
@@ -36,6 +37,7 @@ function setup(loader, resources) {
     flame.anchor.x = 0.5
     flame.anchor.y = ship1.anchor.y + 1.2
     flame.rotation = 3.142
+    flame.tint = 0x00FF00
     shipContainer.addChild(flame)
     flame.play()
     flame.animationSpeed = 0.02
@@ -100,8 +102,15 @@ let keys = []
 let speed = 4;
 let bullets = []
 let bulletSpeed = 8;
+// this time tracks the game throughout
+let lastTime = 0
 
-function gameLoop() {
+
+function gameLoop(currentTime) {
+    // in case i need to use diff in time
+    let deltaTime = currentTime - lastTime
+    lastTime = currentTime
+    // console.log(deltaTime)
     shipMovement()
     shipShoot()
     updateBullets()
@@ -120,4 +129,15 @@ function gameLoop() {
 }
 
 app.stage.addChild(shipContainer)
-gameLoop()
+gameLoop(lastTime)
+
+
+// to do
+// need to fix bullet spacing
+// add second player
+// second player controls
+// collision detect when hit
+// health bar, name, ammo etc
+// player menu
+// obstacles which move
+// change to classes
