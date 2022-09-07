@@ -10,52 +10,58 @@ const app = new PIXI.Application({
 
 document.body.appendChild(app.view);
 
-let shipContainer = new PIXI.Container();
-shipContainer.x = 40
-shipContainer.y = 40
-shipContainer.rotation = 0;
 
-let ship1 = PIXI.Sprite.from('/img/spaceship-body.png');
-ship1.anchor.x = 0.5
-ship1.anchor.y = 0.5
-ship1.tint = 0x00FF00
-shipContainer.addChild(ship1)
+const player1 = new Spaceship(app, 80, 80, "Player1")
+
+
+// let shipContainer = new PIXI.Container();
+// shipContainer.x = 40
+// shipContainer.y = 40
+// shipContainer.rotation = 0;
+
+// let ship1 = PIXI.Sprite.from('/img/spaceship-body.png');
+// ship1.anchor.x = 0.5
+// ship1.anchor.y = 0.5
+// ship1.tint = 0x00FF00
+// shipContainer.addChild(ship1)
 
 // load img
-const loader = PIXI.Loader.shared;
+// const loader = PIXI.Loader.shared;
 
-loader.add("tileset", "./spritesheet.json").load(setup)
+// loader.add("tileset", "./spritesheet.json").load(setup)
 
-function setup(loader, resources) {
-    const textures = []
-    for(let i = 3; i < 5 ;i++) {
-        const texture = PIXI.Texture.from(`flame${i}.png`)
-        textures.push(texture)
-    }
-    const flame = new PIXI.AnimatedSprite(textures)
-    flame.scale.set(.07,.07)
-    flame.anchor.x = 0.5
-    flame.anchor.y = ship1.anchor.y + 1.2
-    flame.rotation = 3.142
-    flame.tint = 0x00FF00
-    shipContainer.addChild(flame)
-    flame.play()
-    flame.animationSpeed = 0.02
-}
+// function setup(loader, resources) {
+//     const textures = []
+//     for(let i = 3; i < 5 ;i++) {
+//         const texture = PIXI.Texture.from(`flame${i}.png`)
+//         textures.push(texture)
+//     }
+//     const flame = new PIXI.AnimatedSprite(textures)
+//     flame.scale.set(.07,.07)
+//     flame.anchor.x = 0.5
+//     flame.anchor.y = ship1.anchor.y + 1.2
+//     flame.rotation = 3.142
+//     flame.tint = 0x00FF00
+//     shipContainer.addChild(flame)
+//     flame.play()
+//     flame.animationSpeed = 0.02
+// }
 
 function shipMovement(e) {
     // movement
     if (keys["d"]) {
         // ship1.rotation += 0.1
-        shipContainer.rotation += 0.1
+        player1.body.rotation += 0.1
     }
     if (keys["a"]) {
         // ship1.rotation -= 0.1
-        shipContainer.rotation -= 0.1
+        player1.body.rotation -= 0.1
     }
     if (keys["w"]) {
-        shipContainer.x += Math.sin( shipContainer.rotation )  * speed;
-        shipContainer.y -= Math.cos( shipContainer.rotation )  * speed;
+        player1.container.position.x += Math.sin( player1.body.rotation )  * speed;
+        player1.container.position.y -= Math.cos( player1.body.rotation )  * speed;
+        // console.log("move")
+
     }
 }
 
@@ -72,10 +78,10 @@ function shipShoot(lastTime) {
 function createBullet() {
     let bullet = new PIXI.Sprite.from('/img/bullet.png');
     bullet.anchor.set(0.5)
-    bullet.x = shipContainer.x
-    bullet.y = shipContainer.y
+    bullet.x = player1.container.position.x 
+    bullet.y = player1.container.position.y
     bullet.speed = bulletSpeed
-    bullet.rotation = shipContainer.rotation
+    bullet.rotation = player1.body.rotation
     app.stage.addChild(bullet)
 
     return bullet
@@ -131,7 +137,7 @@ function gameLoop(currentTime) {
     requestAnimationFrame(gameLoop);
 }
 
-app.stage.addChild(shipContainer)
+// app.stage.addChild(shipContainer)
 gameLoop(lastTime)
 
 
