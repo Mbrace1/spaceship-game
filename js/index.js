@@ -59,12 +59,13 @@ function shipMovement(e) {
     }
 }
 
-function shipShoot() {
+function shipShoot(lastTime) {
+    // console.log(lastTime)
     // add interval between firing
-    if (keys[" "]) {
+    if (keys[" "] && lastTime > timebulletFired + fireInterval) {
         let bullet = createBullet()
         bullets.push(bullet)
-        console.log("fire")
+        timebulletFired = lastTime
     }
 }
 
@@ -99,9 +100,11 @@ function updateBullets() {
 
 // keyboard arrows
 let keys = []
-let speed = 4;
+const speed = 4;
 let bullets = []
-let bulletSpeed = 8;
+const bulletSpeed = 8;
+const fireInterval = 200
+let timebulletFired = 0
 // this time tracks the game throughout
 let lastTime = 0
 
@@ -112,7 +115,7 @@ function gameLoop(currentTime) {
     lastTime = currentTime
     // console.log(deltaTime)
     shipMovement()
-    shipShoot()
+    shipShoot(lastTime)
     updateBullets()
     // adds key code to array on press, allowing for multiple keys being pressed at once
     document.addEventListener("keydown", function(e) {
@@ -133,7 +136,6 @@ gameLoop(lastTime)
 
 
 // to do
-// need to fix bullet spacing
 // add second player
 // second player controls
 // collision detect when hit
