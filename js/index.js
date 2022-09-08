@@ -11,17 +11,7 @@ const app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 // load flame imgs
-const loader = PIXI.Loader.shared;
-loader.add("tileset", "./spritesheet.json").load(setup)
-const textures = []
-console.log(textures)
-
-function setup (loader, resources) {
-    for(let i = 3; i < 5 ;i++) {
-        const texture = PIXI.Texture.from(`flame${i}.png`)
-        textures.push(texture)
-    }
-}
+// app.loader.add("tileset", "./spritesheet.json")
 
 function shipMovement(e) {
     // movement
