@@ -7,6 +7,9 @@ class Spaceship {
         this.tint = tint
         this.health = 100;
         this.bulletManager = bullets
+        this.isDestroyed = false
+        this.hitDuration = 60
+        this.hitHighlightStart = null
         // spaceship container
 		this.container = new PIXI.Container();
 		this.container.position.x = x;
@@ -35,6 +38,18 @@ class Spaceship {
         this.flame.tint = this.tint
         this.flame.animationSpeed = 0.02
         this.flame.play()
+
+        // explosion will be added to stage once spaceship destroyed
+        const explosionTextures = []
+        for(let i = 1; i < 25 ;i++) {
+            const texture = PIXI.Texture.from(`./img/explosion/explosion_frame_${i}.png`)
+            explosionTextures.push(texture)
+        }
+        this.explosion = new PIXI.AnimatedSprite(explosionTextures)
+		this.explosion.anchor.x = 0.5;
+		this.explosion.anchor.y = 0.5;
+		this.explosion.loop = false;
+
         // add to stage
         this.game.stage.addChild(this.container);
     }
@@ -46,13 +61,19 @@ class Spaceship {
         // call destroyed if no health 
         if (this.body.containsPoint(bulletPos)) {
             this.health--
-            console.log("ship hit")
+            this.body.tint = 0xFF0000;
+            this.hitHighlightStart = performance.now();
             if (this.health <= 0) {
                 console.log("spaceship destroyed")
                 // remove ship
-                // log player win in main game loop
+                this.isDestroyed = true;
+                this.game.stage.addChild( this.explosion );
+                this.explosion.position.x = this.container.position.x;
+                this.explosion.position.y = this.container.position.y;
+                this.explosion.play();
             }
         }
+        
     }
 
     shoot() {
@@ -77,7 +98,11 @@ class Spaceship {
             this.container.addChild(this.flame);
         }
     }
-    // destroyed
-        // show explosion
-        // remove ship from game
+
+    update(lastTime) {
+        if (this.hitHighlightStart && lastTime > this.hitHighlightStart + this.hitDuration) {
+            this.body.tint = this.tint;
+            this.hitHighlightStart = null
+        }
+    }
 }

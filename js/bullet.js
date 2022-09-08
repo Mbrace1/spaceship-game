@@ -65,8 +65,8 @@ class Bullets {
     createBullet() {
         let bullet = new PIXI.Sprite.from('/img/bullet.png');
         bullet.anchor.set(0.5)
-		bullet.position.x = 200;
-		bullet.position.y = 200;
+		bullet.position.x = -50;
+		bullet.position.y = -50;
 		bullet.anchor.x = 0.5;
 		bullet.anchor.y = 0.5;
 		bullet.rotation = 0;

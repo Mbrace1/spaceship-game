@@ -69,6 +69,8 @@ function gameLoop(currentTime) {
     shipMovement()
     shipShoot(lastTime)
     bulletManager.update([player1,player2])
+    player1.update(lastTime)
+    player2.update(lastTime)
     // adds key code to array on press, allowing for multiple keys being pressed at once
     document.addEventListener("keydown", function(e) {
         keys[e.key] = true
