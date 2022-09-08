@@ -108,8 +108,18 @@ function gameLoop(currentTime) {
     requestAnimationFrame(gameLoop);
 }
 
+const TINTS = [
+	0x00FF00,
+	0x66FFAA,
+	0x00FFFF,
+	0xFF00FF,
+	0xFFAAFF,
+	0xFFFF00,
+	0xFF6600
+];
+
 const player1 = new Spaceship(app, 80, 80, "Player1", 0x00FF00)
-const player2 = new Spaceship(app, 100, 100, "Player2", 0x00FF00)
+const player2 = new Spaceship(app, 100, 100, "Player2", 0xFFAAFF)
 gameLoop(lastTime)
 
 
