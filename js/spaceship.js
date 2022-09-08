@@ -1,11 +1,12 @@
 
 class Spaceship {
-    constructor(game, x, y, name, tint) {
+    constructor(game, x, y, name, tint, bullets) {
         this.game = game;
         this.name = name;   
         this.speed = 4;
         this.tint = tint
-        // this.textures = []
+        this.health = 100;
+        this.bulletManager = bullets
         // spaceship container
 		this.container = new PIXI.Container();
 		this.container.position.x = x;
@@ -43,7 +44,22 @@ class Spaceship {
         // if bullet within body of sprite
         // takewaway health
         // call destroyed if no health 
-        // console.log("hit")
+        if (this.body.containsPoint(bulletPos)) {
+            this.health--
+            console.log("ship hit")
+            if (this.health <= 0) {
+                console.log("spaceship destroyed")
+                // remove ship
+                // log player win in main game loop
+            }
+        }
+    }
+
+    shoot() {
+        this.bulletManager.fire(
+            this.container.position.x,
+            this.container.position.y,
+            this.body.rotation, this)
     }
     
     movement(direction) {
@@ -64,13 +80,4 @@ class Spaceship {
     // destroyed
         // show explosion
         // remove ship from game
-
-    update(dx, dy) {
-        console.log(this.x)
-        console.log(this.y)
-        this.x = this.x + dx
-        this.y = this.y + dy
-    }
-    // position/movement update
-        // wasd movement
 }

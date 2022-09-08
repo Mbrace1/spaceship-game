@@ -37,48 +37,23 @@ function shipMovement(e) {
 }
 
 function shipShoot(lastTime) {
-    // console.log(lastTime)
     // add interval between firing
     if (keys[" "] && lastTime > timebulletFired + fireInterval) {
-        let bullet = createBullet()
-        bullets.push(bullet)
+        // console.log("player1 fire")
+        player1.shoot()
+        timebulletFired = lastTime
+    }
+    if(keys["k"] && lastTime > timebulletFired + fireInterval) {
+        player2.shoot()
+        // console.log("player2 fire")
         timebulletFired = lastTime
     }
 }
 
-function createBullet() {
-    let bullet = new PIXI.Sprite.from('/img/bullet.png');
-    bullet.anchor.set(0.5)
-    bullet.x = player1.container.position.x 
-    bullet.y = player1.container.position.y
-    bullet.speed = bulletSpeed
-    bullet.rotation = player1.body.rotation
-    app.stage.addChild(bullet)
-
-    return bullet
-}
-
-function updateBullets() {
-    for (let i = 0; i < bullets.length; i++) {
-        bullets[i].position.x += Math.sin( bullets[i].rotation )  * bullets[i].speed;
-        bullets[i].position.y -= Math.cos( bullets[i].rotation )  * bullets[i].speed;
-        
-        if (				
-            bullets[i].position.x < 0 ||
-            bullets[i].position.x > app.renderer.width ||
-            bullets[i].position.y < 0 ||
-            bullets[i].position.y > app.renderer.height) {
-                app.stage.removeChild(bullets[i])
-                bullets.splice(i,1)
-        }
-    }
-    
-}
 
 // keyboard arrows
 let keys = []
 const speed = 4;
-let bullets = []
 const bulletSpeed = 8;
 const fireInterval = 200
 let timebulletFired = 0
@@ -93,7 +68,7 @@ function gameLoop(currentTime) {
     // console.log(deltaTime)
     shipMovement()
     shipShoot(lastTime)
-    updateBullets()
+    bulletManager.update([player1,player2])
     // adds key code to array on press, allowing for multiple keys being pressed at once
     document.addEventListener("keydown", function(e) {
         keys[e.key] = true
@@ -118,14 +93,15 @@ const TINTS = [
 	0xFF6600
 ];
 
-const player1 = new Spaceship(app, 80, 80, "Player1", 0x00FF00)
-const player2 = new Spaceship(app, 100, 100, "Player2", 0xFFAAFF)
+const bulletManager = new Bullets(app, bulletSpeed);
+
+player1 = new Spaceship(app, 80, 80, "Player1", 0x00FF00, bulletManager),
+player2 = new Spaceship(app, 100, 100, "Player2", 0xFFAAFF, bulletManager)
+
 gameLoop(lastTime)
 
 
 // to do
-// add second player
-// second player controls
 // collision detect when hit
 // health bar, name, ammo etc
 // player menu
