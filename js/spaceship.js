@@ -1,9 +1,11 @@
 
 class Spaceship {
-    constructor(game, x, y, name) {
+    constructor(game, x, y, name, tint, textures) {
         this.game = game;
         this.name = name;   
         this.speed = 4;
+        this.tint = tint
+        this.textures = textures
         // spaceship container
 		this.container = new PIXI.Container();
 		this.container.position.x = x;
@@ -15,8 +17,18 @@ class Spaceship {
 		// this.body.tint = this.tint;
 		this.body.anchor.x = 0.5;
 		this.body.anchor.y = 0.5;
-		this.body.tint = 0x00FF00;
+		this.body.tint = this.tint;
         this.container.addChild(this.body);
+
+        // add flame sprite
+        // this.flame = new PIXI.AnimatedSprite(this.textures)
+        // this.flame.scale.set(.07,.07)
+        // this.flame.anchor.x = 0.5
+        // this.flame.anchor.y = this.body.anchor.y + 1.2
+        // this.flame.rotation = 3.142
+        // this.flame.tint = this.tint
+        // this.flame.animationSpeed = 0.02
+        // this.container.addChild(this.flame);
 
         // add to stage
         this.game.stage.addChild(this.container);
@@ -40,7 +52,9 @@ class Spaceship {
         if (direction === "forward") {
             this.container.position.x += Math.sin( this.body.rotation )  * this.speed;
             this.container.position.y -= Math.cos( this.body.rotation )  * this.speed;
-            console.log("move")
+            this.flame.play()
+        } else if (this.flame) {
+            this.game.stage.removeChild(this.flame);
         }
     }
     // destroyed

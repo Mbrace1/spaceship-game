@@ -10,43 +10,18 @@ const app = new PIXI.Application({
 
 document.body.appendChild(app.view);
 
+// load flame imgs
+const loader = PIXI.Loader.shared;
+loader.add("tileset", "./spritesheet.json").load(setup)
+const textures = []
+console.log(textures)
 
-const player1 = new Spaceship(app, 80, 80, "Player1")
-const player2 = new Spaceship(app, 100, 100, "Player2")
-
-
-// let shipContainer = new PIXI.Container();
-// shipContainer.x = 40
-// shipContainer.y = 40
-// shipContainer.rotation = 0;
-
-// let ship1 = PIXI.Sprite.from('/img/spaceship-body.png');
-// ship1.anchor.x = 0.5
-// ship1.anchor.y = 0.5
-// ship1.tint = 0x00FF00
-// shipContainer.addChild(ship1)
-
-// load img
-// const loader = PIXI.Loader.shared;
-
-// loader.add("tileset", "./spritesheet.json").load(setup)
-
-// function setup(loader, resources) {
-//     const textures = []
-//     for(let i = 3; i < 5 ;i++) {
-//         const texture = PIXI.Texture.from(`flame${i}.png`)
-//         textures.push(texture)
-//     }
-//     const flame = new PIXI.AnimatedSprite(textures)
-//     flame.scale.set(.07,.07)
-//     flame.anchor.x = 0.5
-//     flame.anchor.y = ship1.anchor.y + 1.2
-//     flame.rotation = 3.142
-//     flame.tint = 0x00FF00
-//     shipContainer.addChild(flame)
-//     flame.play()
-//     flame.animationSpeed = 0.02
-// }
+function setup (loader, resources) {
+    for(let i = 3; i < 5 ;i++) {
+        const texture = PIXI.Texture.from(`flame${i}.png`)
+        textures.push(texture)
+    }
+}
 
 function shipMovement(e) {
     // movement
@@ -143,7 +118,8 @@ function gameLoop(currentTime) {
     requestAnimationFrame(gameLoop);
 }
 
-// app.stage.addChild(shipContainer)
+const player1 = new Spaceship(app, 80, 80, "Player1", 0x00FF00)
+const player2 = new Spaceship(app, 100, 100, "Player2", 0x00FF00)
 gameLoop(lastTime)
 
 
