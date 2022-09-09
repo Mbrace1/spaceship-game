@@ -1,6 +1,8 @@
 
 class Bullets {
+    static count = 0
     constructor (game, bulletSpeed) {
+        Bullets.count++
         this.game = game
         this.intitalBullets = 5
         this.bulletSpeed = bulletSpeed

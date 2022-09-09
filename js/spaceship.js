@@ -1,11 +1,14 @@
 
 class Spaceship {
+    static count = 0;
     constructor(game, x, y, name, tint, bullets) {
+        Spaceship.count++
         this.game = game;
         this.name = name;   
-        this.speed = 4;
+        this.speed = 5;
         this.tint = tint
         this.health = 100;
+        this.healthbarWidth = 50;
         this.bulletManager = bullets
         this.isDestroyed = false
         this.hitDuration = 60
@@ -15,6 +18,31 @@ class Spaceship {
 		this.container.position.x = x;
 		this.container.position.y = y;
         this.container.rotation = 0;
+
+        // text
+		this.textStyle = { font : 'Arial',fontSize: '12px', fill: this.tint, align : 'center' };
+		this.text = new PIXI.Text( name, this.textStyle );
+		this.text.anchor.x = 0.5;
+		this.text.anchor.y = -2.5;
+		this.container.addChild( this.text );
+
+        // healthbar
+        this.healthbar = new PIXI.Container();
+
+        // represents empty health
+        this.healthbarOuter = new PIXI.Graphics();
+        this.healthbarOuter.beginFill(0x0000);
+        this.healthbarOuter.lineStyle(2, this.tint);
+        this.healthbarOuter.drawRect(-25, 55, this.healthbarWidth, 5);
+        
+        // represents full health, will decrease
+        this.healthbarInner = new PIXI.Graphics();
+        this.healthbarInner.beginFill(0xff0000);
+        this.healthbarInner.drawRect(-25, 55, this.healthbarWidth, 5);
+
+        this.healthbar.addChild(this.healthbarOuter);
+        this.healthbar.addChild(this.healthbarInner);
+        this.container.addChild(this.healthbar);
 
         // create sprite
         this.body = PIXI.Sprite.from('/img/spaceship-body.png');
@@ -61,10 +89,15 @@ class Spaceship {
         // call destroyed if no health 
         if (this.body.containsPoint(bulletPos)) {
             this.health--
+            this.healthbarWidth = ((this.healthbarWidth *2) -1)/2
             this.body.tint = 0xFF0000;
             this.hitHighlightStart = performance.now();
+            this.healthbar.removeChild(this.healthbarInner);
+            this.healthbarInner = new PIXI.Graphics();
+            this.healthbarInner.beginFill(0xff0000);
+            this.healthbarInner.drawRect(-25, 55, this.healthbarWidth, 5);
+            this.healthbar.addChild(this.healthbarInner);
             if (this.health <= 0) {
-                console.log("spaceship destroyed")
                 // remove ship
                 this.isDestroyed = true;
                 this.game.stage.addChild( this.explosion );

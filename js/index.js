@@ -54,7 +54,7 @@ function shipShoot(lastTime) {
 // keyboard arrows
 let keys = []
 const speed = 4;
-const bulletSpeed = 8;
+const bulletSpeed = 9;
 const fireInterval = 200
 let timebulletFired = 0
 // this time tracks the game throughout
@@ -62,6 +62,15 @@ let lastTime = 0
 
 
 function gameLoop(currentTime) {
+
+    if(player1.isDestroyed) {
+        gameOver(player2.name)
+        return
+    }
+    if(player2.isDestroyed) {
+        gameOver(player1.name)
+        return
+    }
     // in case i need to use diff in time
     let deltaTime = currentTime - lastTime
     lastTime = currentTime
@@ -95,16 +104,105 @@ const TINTS = [
 	0xFF6600
 ];
 
-const bulletManager = new Bullets(app, bulletSpeed);
+function gameOver(player) {
+    const textContainer = new PIXI.Container()
+    textContainer.x = 50;
+    textContainer.y = 100;
 
-player1 = new Spaceship(app, 80, 80, "Player1", 0x00FF00, bulletManager),
-player2 = new Spaceship(app, 100, 100, "Player2", 0xFFAAFF, bulletManager)
+    let containerGraphic = new PIXI.Graphics();
+    containerGraphic.beginFill(0x00, 0.9);
+    containerGraphic.lineStyle(4, 0xFF8000)
+    containerGraphic.drawPolygon([100,0,400,0,320,300, 0, 300]);
+
+    const styleWinMessage = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 40,
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+        fill: ['#ffffff', '#ff8000'],
+        stroke: '#4a1850',
+        strokeThickness: 5,
+        dropShadow: true,
+        dropShadowColor: '#000000',
+        dropShadowBlur: 4,
+        dropShadowAngle: Math.PI / 6,
+        dropShadowDistance: 6,
+        wordWrap: true,
+        wordWrapWidth: 300,
+        lineJoin: 'round',
+        textTransform: 'uppercase'
+    });
+
+    const stylePlayAgain = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 30,
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+        fill: ['#ffffff', '#ff8000'],
+        stroke: '#4a1850',
+        strokeThickness: 5,
+        dropShadow: true,
+        dropShadowColor: '#000000',
+        dropShadowBlur: 4,
+        dropShadowAngle: Math.PI / 6,
+        dropShadowDistance: 6,
+        wordWrap: true,
+        wordWrapWidth: 440,
+        lineJoin: 'round',
+    })
+
+    const winMessage = new PIXI.Text(`${player} WINS THE GAME!`, styleWinMessage);
+    winMessage.x = 100;
+    winMessage.y = 50;
+
+    const playAgain = new PIXI.Text('PLAY AGAIN?', stylePlayAgain);
+    playAgain.x = 100;
+    playAgain.y = 200;
+    playAgain.interactive = true;
+    // Shows hand cursor
+    playAgain.buttonMode = true;
+
+    
+    textContainer.addChild(containerGraphic)
+    textContainer.addChild(winMessage)
+    textContainer.addChild(playAgain)
+    
+    app.stage.addChild(textContainer);
+    
+    // Pointers normalize touch and mouse
+    playAgain.on('pointerdown', replayGame);
+    playAgain.on('mouseover', hoverActive);
+    playAgain.on('mouseout', hoverNotActive);
+    
+    function hoverActive(e) {
+        this.style.fill = ['#ffffff', '#ff0000']
+    }
+    function hoverNotActive(e) {
+        this.style.fill = ['#ffffff', '#ff8000']
+    }
+}
+
+
+function replayGame() {
+    app.stage.removeChildren()
+    bulletManager = new Bullets(app, bulletSpeed);
+    player1 = new Spaceship(app, 200, 200, "Player1", 0x00FF00, bulletManager),
+    player2 = new Spaceship(app, app.renderer.width - 200, app.renderer.height - 200, "Player2", 0xFFAAFF, bulletManager)
+
+    lastTime = 0
+    gameLoop(lastTime)
+}
+
+let bulletManager = new Bullets(app, bulletSpeed);
+
+let player1 = new Spaceship(app, 200, 200, "Player1", 0x00FF00, bulletManager)
+let player2 = new Spaceship(app, app.renderer.width - 200, app.renderer.height - 200, "Player2", 0xFFAAFF, bulletManager)
 
 gameLoop(lastTime)
+// gameOver(player1.name)
 
 
 // to do
-// collision detect when hit
 // health bar, name, ammo etc
 // player menu
 // obstacles which move
